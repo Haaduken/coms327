@@ -1,4 +1,4 @@
-DEPS := main.o dca1d.o
+DEPS := main.o ca.o
 BIN := odca
 
 all: build
