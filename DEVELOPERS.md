@@ -1,4 +1,4 @@
-# Computer Science 327 P1 - DEVELOPERS
+# Computer Science 327 Part B - DEVELOPERS
 ## Short Summary of Each Source File
 - `dca1d.c`
   - Contains methods to interact with an array of unsigned chars
@@ -7,7 +7,7 @@
       - Inputs: size of array and array
       - Sets all values to `0`
       - Outputs: none
-    - `void set1DCACell(unsigned char *arr, int index, unsigned char setVal)`
+    - `int set1DCACell(unsigned char *arr, int index, unsigned char setVal)`
       - Inputs: array, index, and value to set at index
       - Sets the value in the array at the specified index
       - Outputs: none

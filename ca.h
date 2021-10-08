@@ -4,6 +4,8 @@
 typedef struct ca_data{
     int cellCount;
     unsigned char *arr;
+    int wrapping;
+    unsigned char qstate;
 } ca_data;
 
 void display1DCA(struct ca_data *data);

@@ -6,7 +6,7 @@ all: build
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-build: dca1d.o $(DEPS)
+build: $(DEPS)
 	$(CC) -o $(BIN) $(DEPS) $(CFLAGS)
 
 clean:
