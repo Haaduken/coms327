@@ -1,4 +1,4 @@
-# Computer Science 327 P1
+# Computer Science 327 P2
 ## Compilation and Execution
 ### To compile and Execute
 - Run `make`

@@ -12,6 +12,11 @@
         - `int` of how many steps to go though
       - Actions: checks all input vals to make sure they are valid, creates 
       - Outputs: none
+    - `unsigned char rule110(struct ca_data *data, int index)`
+      - Inputs: pointer to a struct of ca_data, the index to check within
+      - Actions: Checks values of the array within the struct to determine what to output, follows rule 110 
+      - Output: `0` `1` or `data->arr[index]`'s value if it is neither `1` or `0` 
+
 - `ca.c`
   - Contains methods to interact with struct `ca_data`
   - Methods
@@ -35,6 +40,18 @@
       - Inputs: a pointer to a struct of ca_data, a function pointer for what should occur each step, and a flag on how to act on each step
       - Actions: Takes the data struct passed in, gives it to the function passed in, and based on the flag, it will place it accordingly into the struct
       - Outputs: none Writes to pointer's memory
+- `ca.h`
+  - Header file for `ca.c`
+  - Contains method declarations to be used else where
+  - Contains struct `ca_data` with the following
+    - `int cellCount`
+      - Size of arr
+    - `unsigned char *arr`
+      - Array that holds data
+    - `int wrapping`
+      - Flag to indiciate if data should be wrapped or not
+    - `unsigned char qstate`
+      - Initial start state
 
 ---
 ## Data Structures
