@@ -1,23 +1,5 @@
 # Computer Science 327 Part B - DEVELOPERS
 ## Short Summary of Each Source File
-- `dca1d.c`
-  - Contains methods to interact with an array of unsigned chars
-  - Methods
-    - `void init1DCA(int numCells, unsigned char *arr)`
-      - Inputs: size of array and array
-      - Sets all values to `0`
-      - Outputs: none
-    - `int set1DCACell(unsigned char *arr, int index, unsigned char setVal)`
-      - Inputs: array, index, and value to set at index
-      - Sets the value in the array at the specified index
-      - Outputs: none
-    - `void display1DCA(unsigned char *arr, int numCells)`
-      - Inputs: array and the size of the array
-      - prints the contents of the array to the terminal
-      - Outputs: none
-- `dca1d.h`
-  - Header file for `dca1d.c`
-  - Used within `main.c` to allow it to use methods from `dca1d.c`
 - `main.c`
   - Runs base code utilising the dca1d
   - Methods
@@ -27,7 +9,30 @@
       - does not take any command line inputs to execute, all configured within
       - `CELL_SIZE` can be changed to adjust size of unsigned char array
       - Outputs: none
+- `ca.c`
+  - Contains methods to interact with struct `ca_data`
+  - Methods
+    - `void display1DCA(struct ca_data *data)`
+      - Inputs: a pointer to a struct of ca_data
+      - Actions: prints the data to `stdout`
+      - Outputs: to `stdout`
+    - `int set1DCACell(struct ca_data *data, unsigned int index, unsigned char setVal)`
+      - Inputs: a pointer to a struct of ca_data, an index to store at, and the value to store
+      - Actions: sets the data's array of data at `index` to the value passed in
+      - Outputs: `1` on sucess, `0` on failure
+    - `void init1DCA(struct ca_data *data, int initVal)`
+      - Inputs: a pointer to a struct of ca_data
+      - Actions: 
+      - Outputs: 
+    - `struct ca_data * create1DCA(int numCells, unsigned char initialVal)`
+      - Inputs: a pointer to a struct of ca_data
+      - Actions: 
+      - Outputs: 
+    - `void stepCA( struct ca_data *data, unsigned char (*function)(struct ca_data *, int), int edgeCase)`
+      - Inputs: a pointer to a struct of ca_data
+      - Actions: 
+      - Outputs: 
 
 ---
 ## Data Structures
-This programme utilises an array that consists of unsigned chars. That is currently the only data structure it contains
+This programme utilises a struct that contains 
