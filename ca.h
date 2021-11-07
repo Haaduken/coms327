@@ -4,18 +4,27 @@
 typedef struct ca_data{
     int cellCount;
     unsigned char *arr;
-    int wrapping;
+    unsigned char wrap;
     unsigned char qstate;
+    unsigned char dimension;
+    int width;
+    int height;
 } ca_data;
 
-void display1DCA(struct ca_data *data);
+void display1DCA(struct ca_data *ca);
 
-int set1DCACell(struct ca_data *data, unsigned int index, unsigned char setVal);
+int set1DCACell(struct ca_data *ca, unsigned int x, unsigned char state);
 
-void init1DCA(struct ca_data *data, int initVal);
+int set2DCACell( struct ca_data *ca, unsigned int x, unsigned int y, unsigned char state); 
 
-struct ca_data * create1DCA(int numCells, unsigned char initialVal); 
+void initCA(struct ca_data *ca, int state);
 
-void stepCA( struct ca_data *data, unsigned char (*function)(struct ca_data *, int), int edgeCase);
+struct ca_data * create1DCA(int w, unsigned char qstate); 
+
+struct ca_data * create2DCA( int w, int h, unsigned char qstate); 
+
+void step1DCA( struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int), int x);
+
+void step2DCA( struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int x, int y));
 
 #endif

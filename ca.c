@@ -25,10 +25,15 @@ int set1DCACell(struct ca_data *data, unsigned int index, unsigned char setVal){
     return 1;
 }
 
+int set2DCACell( struct ca_data *ca, unsigned int x, unsigned int y, unsigned char state){
+
+}
+
+
 /**
  * @param data which struct to initialize
  */
-void init1DCA(struct ca_data *data, int initVal){
+void initCA(struct ca_data *data, int initVal){
     memset(data->arr, (int)(initVal), sizeof(ca_data));
 }
 
@@ -48,13 +53,18 @@ struct ca_data * create1DCA(int numCells, unsigned char initialVal){
     return data;
 }
 
+struct ca_data * create2DCA( int w, int h, unsigned char qstate){
+
+}
+
+
 /**
  * @param data which struct to step through
  * @param rule function pointer to throw data into
  * @param edgeCase flag to determine if the data should wrap or not
  */
-void stepCA( struct ca_data *data, unsigned char (*rule)(struct ca_data *, int), int edgeCase){
-    data->wrapping = edgeCase;
+void step1DCA( struct ca_data *data, unsigned char (*rule)(struct ca_data *, int), int edgeCase){
+    data->wrap = edgeCase;
     //create a padded copy of data (+1 on each side) and fill it with data's contents
     ca_data *padded = malloc(sizeof(ca_data)); 
     padded->cellCount = data->cellCount;
@@ -81,4 +91,8 @@ void stepCA( struct ca_data *data, unsigned char (*rule)(struct ca_data *, int),
         set1DCACell(data, i, rule(padded, i+1));
     }
     
+}
+
+void step2DCA( struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int x, int y)){
+
 }
