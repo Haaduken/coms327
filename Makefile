@@ -1,5 +1,5 @@
 DEPS := main.o ca.o
-BIN := odca
+BIN := gol
 
 all: build
 

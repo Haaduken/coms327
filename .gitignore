@@ -1,7 +1,14 @@
 #Executeable
 *.out
 *.exe
-odca
+gol
 
 #Compiled Object Files
 *.o
+
+#VSC Specifics
+/.vscode
+
+#Local Files
+*.old
+#*.txt
