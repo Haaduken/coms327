@@ -8,13 +8,12 @@
  */
 void displayCA(struct ca_data *data)
 {
-    for (int i = 0; i < data->height; i++)
+    for (int y = 0; y < data->height; y++)
     {
-        for (int j = 0; j < data->width; j++)
-            printf("%d ", data->cadata[j][i]);
+        for (int x = 0; x < data->width; x++)
+            printf("%d ", data->cadata[y][x]);
         printf("\n");
     }
-    printf("\n");
 }
 
 /**
@@ -25,9 +24,11 @@ void displayCA(struct ca_data *data)
  */
 int set1DCACell(struct ca_data *data, unsigned int x, unsigned char setVal)
 {
+    // printf("AH\n");
     if (x > data->width)
         return 0;
-    data->cadata[x][data->height - 1] = setVal;
+
+    data->cadata[0][x] = setVal;
     return 1;
 }
 
@@ -42,7 +43,7 @@ int set2DCACell(struct ca_data *ca, unsigned int x, unsigned int y, unsigned cha
 {
     if (x > ca->width || y > ca->height)
         return 0;
-    ca->cadata[x][y] = state;
+    ca->cadata[y][x] = state;
     return 1;
 }
 
@@ -51,7 +52,23 @@ int set2DCACell(struct ca_data *ca, unsigned int x, unsigned int y, unsigned cha
  */
 void initCA(struct ca_data *data, int initVal)
 {
-    memset(data->cadata, (int)(initVal), sizeof(ca_data));
+    if (data->dimension == 1)
+    {
+        for (int x = 0; x < data->width; x++)
+        {
+            set1DCACell(data, x, data->qstate);
+        }
+    }
+    else
+    {
+        for (int y = 0; y < data->height; y++)
+        {
+            for (int x = 0; x < data->width; x++)
+            {
+                set2DCACell(data, x, y, data->qstate);
+            }
+        }
+    }
 }
 
 /**
@@ -64,30 +81,29 @@ struct ca_data *create1DCA(int numCells, unsigned char initialVal)
     data->height = 1;
     data->width = numCells;
     data->qstate = initialVal;
-    data->cadata = malloc(sizeof(unsigned char) * data->height * data->width);
+    data->cadata = malloc(sizeof(unsigned char *) * data->height);
+    for (int i = 0; i < data->height; i++)
+        data->cadata[i] = malloc(sizeof(unsigned char) * data->width);
+    printf("create1DCA after Mallocs\n");
     initCA(data, data->qstate);
-    for (int x = 0; x < data->width; x++)
-    {
-        set1DCACell(data, x, data->qstate);
-    }
     return data;
 }
 
+/**
+ * @param x how many columns in a newly created ca_data should be
+ * @param y how many rows in ca_data
+ * @param qstate what the starting state of it should be
+ */
 struct ca_data *create2DCA(int w, int h, unsigned char qstate)
 {
     ca_data *data = malloc(sizeof(ca_data));
     data->height = h;
     data->width = w;
     data->qstate = qstate;
-    data->cadata = malloc(sizeof(unsigned char) * data->height * data->width);
+    data->cadata = malloc(sizeof(unsigned char *) * data->height);
+    for (int i = 0; i < data->height; i++)
+        data->cadata[i] = malloc(sizeof(unsigned char) * data->width);
     initCA(data, data->qstate);
-    for (int y = 0; y < data->height; y++)
-    {
-        for (int x = 0; x < data->width; x++)
-        {
-            set2DCACell(data, x, y, data->qstate);
-        }
-    }
     return data;
 }
 
@@ -97,42 +113,56 @@ struct ca_data *create2DCA(int w, int h, unsigned char qstate)
  */
 void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int))
 {
-    // ca->wrap = edgeCase;
-    //create a padded copy of data (+1 on each side) and fill it with data's contents
-    ca_data *padded = malloc(sizeof(ca_data));
-    padded->width = ca->width;
-    padded->width += 2;
-    padded->height = 1;
-    padded->cadata = malloc(sizeof(unsigned char) * padded->width * padded->height);
-    padded->qstate = ca->qstate;
+    ca_data *clone = malloc(sizeof(ca_data));
+    clone->width = ca->width;
+    clone->height = 1;
+    clone->qstate = ca->qstate;
+
+    clone->cadata = malloc(sizeof(unsigned char *) * clone->height);
+    clone->cadata[0] = malloc(sizeof(unsigned char) * clone->width);
 
     for (int i = 0; i < ca->width; i++)
     {
-        padded->cadata[i + 1][0] = ca->cadata[i][0];
+        clone->cadata[0][i] = ca->cadata[0][i];
     }
 
-    //send to to set1dcaCell
     for (int x = 0; x < ca->width; x++)
     {
-        set1DCACell(ca, x, rule(padded, x + 1));
+        set1DCACell(ca, x, rule(clone, x));
     }
+
+    free(ca->cadata[0]);
+    free(ca->cadata);
+    free(ca);
 }
 
 void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int))
 {
-    ca_data *padded = malloc(sizeof(ca_data));
-    padded->width = ca->width;
-    padded->height = ca->height;
-    padded->width += 2;
-    padded->height += 2;
-    padded->cadata = malloc(sizeof(unsigned char) * padded->width * padded->height);
-    padded->qstate = ca->qstate;
+    ca_data *clone = malloc(sizeof(ca_data));
+    clone->width = ca->width;
+    clone->height = ca->height;
+    clone->qstate = ca->qstate;
+
+    clone->cadata = malloc(sizeof(unsigned char *) * clone->height);
+    for (int i = 0; i < clone->height; i++)
+        clone->cadata[i] = malloc(sizeof(unsigned char) * clone->width);
+
+    for (int j = 0; j < ca->height; j++)
+        for (int i = 0; i < ca->width; i++)
+            clone->cadata[j][i] = ca->cadata[j][i];
 
     for (int y = 0; y < ca->height; y++)
     {
         for (int x = 0; x < ca->width; x++)
         {
-            set2DCACell(ca, x, y, rule(padded, x + 1, y + 1));
+            set2DCACell(ca, x, y, rule(clone, x, y));
         }
     }
+
+    for (int x = 0; x < ca->height; x++)
+    {
+        free(ca->cadata[x]);
+    }
+    free(ca->cadata);
+    free(ca);
 }
