@@ -11,7 +11,7 @@ typedef struct ca_data
     unsigned char qstate;
 } ca_data;
 
-void display1DCA(struct ca_data *ca);
+void displayCA(struct ca_data *ca);
 
 int set1DCACell(struct ca_data *ca, unsigned int x, unsigned char state);
 
@@ -23,8 +23,8 @@ struct ca_data *create1DCA(int w, unsigned char qstate);
 
 struct ca_data *create2DCA(int w, int h, unsigned char qstate);
 
-void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int), int x);
+void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int));
 
-void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int x, int y));
+void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int));
 
 #endif

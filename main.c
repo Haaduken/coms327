@@ -3,6 +3,34 @@
 #include <string.h>
 #include "ca.h"
 
+unsigned char rule110(struct ca_data *data, int index)
+{
+
+    if (data->cadata[index - 1][0] == 1 && data->cadata[index][0] == 1 && data->cadata[index + 1][0] == 1)
+        return 0;
+    if (data->cadata[index - 1][0] == 1 && data->cadata[index][0] == 1 && data->cadata[index + 1][0] == 0)
+        return 1;
+    if (data->cadata[index - 1][0] == 1 && data->cadata[index][0] == 0 && data->cadata[index + 1][0] == 1)
+        return 1;
+    if (data->cadata[index - 1][0] == 1 && data->cadata[index][0] == 0 && data->cadata[index + 1][0] == 0)
+        return 0;
+    if (data->cadata[index - 1][0] == 0 && data->cadata[index][0] == 1 && data->cadata[index + 1][0] == 1)
+        return 1;
+    if (data->cadata[index - 1][0] == 0 && data->cadata[index][0] == 1 && data->cadata[index + 1][0] == 0)
+        return 1;
+    if (data->cadata[index - 1][0] == 0 && data->cadata[index][0] == 0 && data->cadata[index + 1][0] == 1)
+        return 1;
+    if (data->cadata[index - 1][0] == 0 && data->cadata[index][0] == 0 && data->cadata[index + 1][0] == 0)
+        return 0;
+    return data->cadata[index][0];
+}
+
+unsigned char CGOL(struct ca_data *ca, int x, int y)
+{
+    ca->wrap = 1;
+    return 1;
+}
+
 int main(int argc, char **argv)
 {
     int dims = -1;
@@ -21,6 +49,7 @@ int main(int argc, char **argv)
         printf("Invalid input: %s\n", argv[1]);
         exit(1);
     }
+
     f = fopen(argv[2], "r");
     if (f == NULL)
     {
@@ -29,13 +58,39 @@ int main(int argc, char **argv)
     }
 
     unsigned char *str = malloc(sizeof(unsigned char) * 6);
-    int numElements = 0;
     fscanf(f, "%d %d", &h, &w);
     printf("Num rows: %d\nNum cols: %d\n", h, w);
     *str = malloc(sizeof(unsigned char) * w);
-    // while (fscanf(f, "%[^\n ] ", str) != EOF && numElements != 2)
-    // {
-    //     // printf("%s\n", str);
 
-    // }
+    ca_data *ca;
+
+    if (dims == 1)
+    {
+        ca = create1DCA(w, '0');
+        for (int x = 0; x < w; x++)
+        {
+            if (fscanf(f, "%s ", str) != EOF)
+                printf("%s ", str);
+            else
+                break;
+        }
+        printf("\n");
+    }
+    else
+    {
+        ca = create2DCA(w, h, '0');
+
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                if (fscanf(f, "%s ", str) != EOF)
+                    printf("%s ", str);
+                else
+                    break;
+            }
+            printf("\n");
+        }
+    }
+    fclose(f);
 }

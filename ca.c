@@ -6,7 +6,7 @@
 /**
  *  @param ca_data struct to grab array from and output
  */
-void display1DCA(struct ca_data *data)
+void displayCA(struct ca_data *data)
 {
     for (int i = 0; i < data->height; i++)
     {
@@ -31,6 +31,13 @@ int set1DCACell(struct ca_data *data, unsigned int x, unsigned char setVal)
     return 1;
 }
 
+/**
+ * @param data which struct to read and write to
+ * @param x where to write to in data's cadata width
+ * @param y where to write to in data's cadata height
+ * @param setVal what to write in data's cadata width and height
+ * @return 0 on fail, 1 on successful writing
+ */
 int set2DCACell(struct ca_data *ca, unsigned int x, unsigned int y, unsigned char state)
 {
     if (x > ca->width || y > ca->height)
@@ -59,9 +66,9 @@ struct ca_data *create1DCA(int numCells, unsigned char initialVal)
     data->qstate = initialVal;
     data->cadata = malloc(sizeof(unsigned char) * data->height * data->width);
     initCA(data, data->qstate);
-    for (int i = 0; i < data->width; i++)
+    for (int x = 0; x < data->width; x++)
     {
-        set1DCACell(data, i, data->qstate);
+        set1DCACell(data, x, data->qstate);
     }
     return data;
 }
@@ -74,11 +81,11 @@ struct ca_data *create2DCA(int w, int h, unsigned char qstate)
     data->qstate = qstate;
     data->cadata = malloc(sizeof(unsigned char) * data->height * data->width);
     initCA(data, data->qstate);
-    for (int i = 0; i < data->height; i++)
+    for (int y = 0; y < data->height; y++)
     {
-        for (int j = 0; j < data->width; j++)
+        for (int x = 0; x < data->width; x++)
         {
-            set2DCACell(data, j, i, data->qstate);
+            set2DCACell(data, x, y, data->qstate);
         }
     }
     return data;
@@ -87,43 +94,45 @@ struct ca_data *create2DCA(int w, int h, unsigned char qstate)
 /**
  * @param data which struct to step through
  * @param rule function pointer to throw data into
- * @param edgeCase flag to determine if the data should wrap or not
  */
-void step1DCA(struct ca_data *data, unsigned char (*rule)(struct ca_data *, int), int edgeCase)
+void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int))
 {
-    data->wrap = edgeCase;
+    // ca->wrap = edgeCase;
     //create a padded copy of data (+1 on each side) and fill it with data's contents
     ca_data *padded = malloc(sizeof(ca_data));
-    padded->width = data->width;
+    padded->width = ca->width;
     padded->width += 2;
     padded->height = 1;
     padded->cadata = malloc(sizeof(unsigned char) * padded->width * padded->height);
-    padded->qstate = data->qstate;
+    padded->qstate = ca->qstate;
 
-    for (int i = 0; i < data->width; i++)
+    for (int i = 0; i < ca->width; i++)
     {
-        padded->cadata[i + 1][0] = data->cadata[i][0];
-    }
-
-    //if we are wrapping, assign last value to the front padded one, and last value to the first
-    if (edgeCase)
-    {
-        padded->cadata[padded->width - 1][0] = data->cadata[0][0];
-        padded->cadata[0][0] = data->cadata[data->width - 1][0];
-    }
-    else
-    {
-        padded->cadata[padded->width - 1][0] = padded->qstate;
-        padded->cadata[0][0] = padded->qstate;
+        padded->cadata[i + 1][0] = ca->cadata[i][0];
     }
 
     //send to to set1dcaCell
-    for (int i = 0; i < data->width; i++)
+    for (int x = 0; x < ca->width; x++)
     {
-        set1DCACell(data, i, rule(padded, i + 1));
+        set1DCACell(ca, x, rule(padded, x + 1));
     }
 }
 
-void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int x, int y))
+void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int))
 {
+    ca_data *padded = malloc(sizeof(ca_data));
+    padded->width = ca->width;
+    padded->height = ca->height;
+    padded->width += 2;
+    padded->height += 2;
+    padded->cadata = malloc(sizeof(unsigned char) * padded->width * padded->height);
+    padded->qstate = ca->qstate;
+
+    for (int y = 0; y < ca->height; y++)
+    {
+        for (int x = 0; x < ca->width; x++)
+        {
+            set2DCACell(ca, x, y, rule(padded, x + 1, y + 1));
+        }
+    }
 }
