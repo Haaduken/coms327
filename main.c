@@ -3,27 +3,6 @@
 #include <string.h>
 #include "ca.h"
 
-unsigned char rule110(struct ca_data *data, int index)
-{
-    if (data->cadata[0][index - 1] == 1 && data->cadata[0][index] == 1 && data->cadata[0][index + 1] == 1)
-        return 0;
-    if (data->cadata[0][index - 1] == 1 && data->cadata[0][index] == 1 && data->cadata[0][index + 1] == 0)
-        return 1;
-    if (data->cadata[0][index - 1] == 1 && data->cadata[0][index] == 0 && data->cadata[0][index + 1] == 1)
-        return 1;
-    if (data->cadata[0][index - 1] == 1 && data->cadata[0][index] == 0 && data->cadata[0][index + 1] == 0)
-        return 0;
-    if (data->cadata[0][index - 1] == 0 && data->cadata[0][index] == 1 && data->cadata[0][index + 1] == 1)
-        return 1;
-    if (data->cadata[0][index - 1] == 0 && data->cadata[0][index] == 1 && data->cadata[0][index + 1] == 0)
-        return 1;
-    if (data->cadata[0][index - 1] == 0 && data->cadata[0][index] == 0 && data->cadata[0][index + 1] == 1)
-        return 1;
-    if (data->cadata[0][index - 1] == 0 && data->cadata[0][index] == 0 && data->cadata[0][index + 1] == 0)
-        return 0;
-    return data->cadata[0][index];
-}
-
 unsigned char CGOL(struct ca_data *ca, int x, int y)
 {
     int nextX = (x + 1 + ca->width) % ca->width;
@@ -79,6 +58,8 @@ int main(int argc, char **argv)
     FILE *f;
     if (!strcmp(argv[1], "1"))
     {
+        printf("1D is not supported!\n");
+        exit(1);
         dims = 1;
         h = 1;
     }
@@ -106,7 +87,6 @@ int main(int argc, char **argv)
     if (dims == 1)
     {
         // printf("Create 1DCA\n");
-
         ca = create1DCA(w, '0');
         ca->dimension = dims;
         ca->qstate = 0;
@@ -126,7 +106,7 @@ int main(int argc, char **argv)
             char check = getchar();
             if (check == '\n')
             {
-                step1DCA(ca, rule110);
+                // step1DCA(ca, rule110);
                 displayCA(ca);
             }
             else if (check != '\n')

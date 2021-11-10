@@ -2,7 +2,7 @@
 ## Compilation and Execution
 ### To compile and Execute
 - Run `make`
-- Run `./odca`
+- Run `./gol`
 ### To remove compiled files
 - Run `make clean`
 ---
