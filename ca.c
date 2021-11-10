@@ -131,9 +131,9 @@ void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int))
         set1DCACell(ca, x, rule(clone, x));
     }
 
-    free(ca->cadata[0]);
-    free(ca->cadata);
-    free(ca);
+    free(clone->cadata[0]);
+    free(clone->cadata);
+    free(clone);
 }
 
 void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int))
@@ -161,8 +161,8 @@ void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, i
 
     for (int x = 0; x < ca->height; x++)
     {
-        free(ca->cadata[x]);
+        free(clone->cadata[x]);
     }
-    free(ca->cadata);
-    free(ca);
+    free(clone->cadata);
+    free(clone);
 }
