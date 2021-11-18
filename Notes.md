@@ -1,18 +1,18 @@
 ## Graphics Client TODO list
 
-- [ ] A constructor with two parameters: GraphicsClient( std::string, int ) where the first parameter is the URL to connect, e.g., “localhost” or “lamb.cs.iastate.edu” and the second parameter is the port number to connect
+- [x] A constructor with two parameters: GraphicsClient( std::string, int ) where the first parameter is the URL to connect, e.g., “localhost” or “lamb.cs.iastate.edu” and the second parameter is the port number to connect
 
-- [ ] A copy constructor that creates a new connection to the same address and port number. 
+- [x] A copy constructor that creates a new connection to the same address and port number. 
 
 - [ ] A destructor that performs the appropriate operations to release all allocated resources. 
 
-- [ ] An operator = method that closes the existing connection and creates a new connection with the parameters from the right-hand side.
+- [x] An operator = method that closes the existing connection and creates a new connection with the parameters from the right-hand side.
 
-- [ ] setBackgroundColor( int , int, int ) sets the background color of the associated display.  The parameters are the red, green and then blue values respectively.
+- [x] setBackgroundColor( int , int, int ) sets the background color of the associated display.  The parameters are the red, green and then blue values respectively.
 
 - [ ] setDrawingColor( int, int, int ) set the color that objects will be drawn at until another setDrawingColor call is made.  The parameters are again, red, green and blue.  
 
-- [ ] clear() clears the display to the background color.
+- [x] clear() clears the display to the background color.
 
 - [ ] setPixel( int, int, int, int, int ) sets the pixel at the location given by the first two parameters to the color given by the last three parameters.  The first two parameter are the location given by the x and then y coordinate.  The last three parameters are the color given by red, green, and blue in that order.
 
@@ -30,4 +30,4 @@
 
 - [ ] drawstring( int, int, string ) draws a string of characters on the display given by the last parameter at the position given by the first two parameters, x, y, in that order. 
 
-- [ ] repaint() send the redraw (repaint) signal to the attached graphics server. 
+- [x] repaint() send the redraw (repaint) signal to the attached graphics server. 

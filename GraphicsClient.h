@@ -14,6 +14,8 @@ public:
 
     int connection();
 
+    int closeConnection();
+
     void setBackgroundColour(int r, int g, int b);
 
     void setDrawingColour(int r, int g, int b);
@@ -34,15 +36,15 @@ public:
 
     void drawline(int x1, int y1, int x2, int y2);
 
-    void drawString(int x1, int y1, int x2, int y2);
+    void drawString(int x, int y, string out);
 
     void repaint();
 
 private:
     int port;
     string addr;
-    int bgR, bgG, bgB, bg;
-    int dwR, dwG, dwB;
-
+    char message[100];
     char *toCharArr(string in);
+    void zeroSet();
+    void rectangle(int x1, int y1, int x2, int y2);
 };

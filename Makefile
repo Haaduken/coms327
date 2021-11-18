@@ -1,13 +1,13 @@
-DEPS := main.o
-BIN := gol
+DEPS := GraphicsClient.o main.o
+BIN := sand
 
 all: build
 
 %.o: %.cpp
-	$(GCC) -c -o $@ $< $(CFLAGS)
+	$(CXX) -c -o $@ $< $(CFLAGS)
 
 build: $(DEPS)
-	$(GCC) -o $(BIN) $(DEPS) $(CFLAGS)
+	$(CXX) -o $(BIN) $(DEPS) $(CFLAGS)
 
 clean:
 	@rm -f *.o $(BIN)
