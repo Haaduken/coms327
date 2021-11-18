@@ -10,7 +10,9 @@ public:
 
     ~GraphicsClient();
 
-    GraphicsClient operator=(string newAddr);
+    void operator=(string newAddr);
+
+    int connection();
 
     void setBackgroundColour(int r, int g, int b);
 
@@ -41,4 +43,6 @@ private:
     string addr;
     int bgR, bgG, bgB, bg;
     int dwR, dwG, dwB;
+
+    char *toCharArr(string in);
 };
