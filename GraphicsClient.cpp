@@ -133,12 +133,12 @@ void GraphicsClient::setPixel(int x, int y, int r, int g, int b)
     message[4] = 0x0F; //size pt1
     message[5] = 0x03; //cmd
     message[6] = x >> 12;
-    message[7] = x >> 8;
-    message[8] = x >> 4;
+    message[7] = (x >> 8) & 0xF;
+    message[8] = (x >> 4) & 0xF;
     message[9] = x & 0xF;
     message[10] = y >> 12;
-    message[11] = y >> 8;
-    message[12] = y >> 4;
+    message[11] = (y >> 8) & 0xF;
+    message[12] = (y >> 4) & 0xF;
     message[13] = y & 0xF;
     message[14] = r >> 4;  //red upper
     message[15] = r & 0xF; //red lower
@@ -171,10 +171,6 @@ void GraphicsClient::fillRectangle(int x, int y, int w, int h)
     message[4] = 0x01; //size pt1
     message[5] = 0x08; //cmd
     shape(x, y, w, h);
-    for (int i = 0; i < 22; i++)
-    {
-        printf("0x%X\n", message[i]);
-    }
     send(sockfd, message, 22, 0);
 }
 
@@ -223,22 +219,22 @@ void GraphicsClient::drawline(int x, int y, int w, int h)
     message[4] = 0x01; //size pt1
     message[5] = 0x0D; //cmd
     message[6] = x >> 12;
-    message[7] = x >> 8;
-    message[8] = x >> 4;
+    message[7] = (x >> 8) & 0xF;
+    message[8] = (x >> 4) & 0xF;
     message[9] = x & 0xF;
     message[10] = y >> 12;
-    message[11] = y >> 8;
-    message[12] = y >> 4;
+    message[11] = (y >> 8) & 0xF;
+    message[12] = (y >> 4) & 0xF;
     message[13] = y & 0xF;
     message[14] = w >> 12;
-    message[15] = w >> 8;
-    message[16] = w >> 4;
+    message[15] = (w >> 8) & 0xF;
+    message[16] = (w >> 4) & 0xF;
     message[17] = w & 0xF;
     message[18] = h >> 12;
-    message[19] = h >> 8;
-    message[20] = h >> 4;
+    message[19] = (h >> 8) & 0xF;
+    message[20] = (h >> 4) & 0xF;
     message[21] = h & 0xF;
-    printf("%ld\n", send(sockfd, message, 22, 0));
+    send(sockfd, message, 22, 0);
 }
 void GraphicsClient::drawString(int x, int y, string out)
 {
@@ -251,12 +247,12 @@ void GraphicsClient::drawString(int x, int y, string out)
     message[4] = size & 0xF; //size pt1
     message[5] = 0x05;       //cmd
     message[6] = x >> 12;
-    message[7] = x >> 8;
-    message[8] = x >> 4;
+    message[7] = (x >> 8) & 0xF;
+    message[8] = (x >> 4) & 0xF;
     message[9] = x & 0xF;
     message[10] = y >> 12;
-    message[11] = y >> 8;
-    message[12] = y >> 4;
+    message[11] = (y >> 8) & 0xF;
+    message[12] = (y >> 4) & 0xF;
     message[13] = y & 0xF;
 
     for (int i = 0, j = 14; i < out.size(); i++, j += 2)
@@ -303,19 +299,25 @@ void GraphicsClient::zeroSet()
 void GraphicsClient::shape(int x, int y, int w, int h)
 {
     message[6] = x >> 12;
-    message[7] = x >> 8;
-    message[8] = x >> 4;
+    message[7] = (x >> 8) & 0xF;
+    message[8] = (x >> 4) & 0xF;
     message[9] = x & 0xF;
     message[10] = y >> 12;
-    message[11] = y >> 8;
-    message[12] = y >> 4;
+    message[11] = (y >> 8) & 0xF;
+    message[12] = (y >> 4) & 0xF;
     message[13] = y & 0xF;
     message[14] = w >> 12;
-    message[15] = w >> 8;
-    message[16] = w >> 4;
+    message[15] = (w >> 8) & 0xF;
+    message[16] = (w >> 4) & 0xF;
     message[17] = w & 0xF;
     message[18] = h >> 12;
-    message[19] = h >> 8;
-    message[20] = h >> 4;
+    message[19] = (h >> 8) & 0xF;
+    message[20] = (h >> 4) & 0xF;
     message[21] = h & 0xF;
+
+    // for (int i = 0; i < 22; i++)
+    // {
+    //     printf("%d:0x%X\n", i, message[i]);
+    // }
+    // printf("%d %d %d %d\n", x, y, w, h);
 }
