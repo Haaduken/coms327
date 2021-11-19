@@ -1,4 +1,4 @@
-DEPS := GraphicsClient.o main.o
+DEPS := GraphicsClient.o main.o CellularAutomaton.o
 BIN := sand
 
 all: build
