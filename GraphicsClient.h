@@ -25,6 +25,7 @@ public:
 
 private:
     int port;
+    int sockfd;
     string addr;
     char message[100];
     char *toCharArr(string in);

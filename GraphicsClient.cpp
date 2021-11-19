@@ -7,8 +7,6 @@
 #include <iostream>
 using namespace std;
 
-int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
 GraphicsClient::GraphicsClient(string _addr, int _port)
 {
     if (strcmp(toCharArr(_addr), "localhost") && strcmp(toCharArr(_addr), "lamb.cs.iastate.edu") && strcmp(toCharArr(_addr), "127.0.0.1"))
@@ -46,6 +44,7 @@ void GraphicsClient::operator=(string newAddr)
 
 int GraphicsClient::connection()
 {
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0)
     {
         fprintf(stderr, "Error creating socket\n");
@@ -76,6 +75,7 @@ int GraphicsClient::connection()
 int GraphicsClient::closeConnection()
 {
     close(sockfd);
+    sockfd = -1;
     return EXIT_SUCCESS;
 }
 
