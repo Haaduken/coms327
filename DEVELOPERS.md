@@ -1,72 +1,98 @@
-# Computer Science 327 Part B - DEVELOPERS
+# Computer Science 327 Project 2 Part A - `DEVELOPERS
 ## Short Summary of Each Source File
-- `main.c`
-  - Runs base code utilising the dca1d
-  - Methods
-    - `main(int argc, char **argv)`
-      - Inputs: 2 additional command line arguments in the following order
-        - `int` of either `1` or `2` to determine how many dimensions are needed
-        - `file path` to a file containing the `rows` and `cols` in that order, then the initial state 
-      - Actions: checks all input vals to make sure they are valid, creates a DCA accordingly
-      - Outputs: to terminal if there are errors
-    - `unsigned char CGOL(struct ca_data *data, int x, int y)`
-      - Inputs: pointer to a struct of ca_data, the x coordinate to check at, y coordinate to check at
-      - Actions: Checks values of the 2D array within the struct to determine what to output, follows Conway's Game Of Life rules 
-      - Output: `0` `1` or `data->cadata[y][x]`'s value if it is neither `1` or `0` 
-
-- `ca.c`
-  - Contains methods to interact with struct `ca_data`
-  - Methods
-    - `void displayCA(struct ca_data *ca)`
-      - Inputs: A pointer to a struct
-      - Actions: Prints the struct's data to stdout
-      - Outputs: Text to stdout
-    - `int set1DCACell(struct ca_data *ca, unsigned int x, unsigned char state)`
-      - Inputs: A pointer to a struct, where in the struct's width to write, and what to write
-      - Actions: Sets the struct's data at width x to state
-      - Outputs: `1` on success, `0` on fail
-    - `int set2DCACell(struct ca_data *ca, unsigned int x, unsigned int y, unsigned char state)`
-      - Inputs: A pointer to a struct, where in the width to write, where in the height to write, what to write
-      - Actions: Sets the struct's data at (x,y) to state
-      - Outputs: `1` on success, `0` on fail
-    - `void initCA(struct ca_data *ca, int state)`
-      - Inputs: A pointer to a struct of ca_data and a value all cells should begin with
-      - Actions: Sets initial starting values of the data struct
-      - Outputs: None, writes to memory
-    - `struct ca_data *create1DCA(int w, unsigned char qstate)`
-      - Inputs: How wide the 1D array should be and the inital state
-      - Actions: Malloc the space as needed and fill initial state
-      - Outputs: A ca_data struct with various elements within
-    - `struct ca_data *create2DCA(int w, int h, unsigned char qstate)`
-      - Inputs: Height and width of the 2D array and the inital state
-      - Actions: Malloc space as needed and fill initial state
-      - Outputs: A ca_data struct with various elements within
-    - `void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int))`
-      - Inputs: Struct and rule to interact with
-      - Actions: Passes a copy of the struct into the rule then setCell's the output to the original
-      - Outputs: None
-    - `void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int))`
-      - Inputs:
-      - Actions: Passes a copy of the struct into the rule then setCell's the output to the original
-      - Outputs: None
-
-- `ca.h`
-  - Header file for `ca.c`
-  - Contains method declarations to be used else where
-  - Contains struct `ca_data` with the following
-    - `int width`
-      - Width of the 2D array
-    - `int height`
-      - Height of the 2D array
+- `main.cpp`
+  - `unsigned char CGOL(CellularAutomaton ca, int x, int y)`
+    - Conways Game of Life
+    - Checks values of the 2D array within the struct to determine what to output, follows Conway's Game Of Life rules
+    - Output: `0` `1` or `data->cadata[y][x]`'s value if it is neither `1` or `0`
+  - `int main(int argc, char **argv)`
+- `GraphicsClient.h`
+  - Contains function headers and private variables for the class
+    - `int port`
+      - Holds the port number for the connection
+    - `string addr`
+      - Holds the address to connect to
+    - `char message[100]`
+      - Holds data for the message to be sent to said connection
+- `GraphicsClient.cpp`
+  - Public:
+    - `GraphicsClient(string _addr, int _port)`
+      - Creates a new graphics client from an address and port
+    - `GraphicsClient(GraphicsClient &copy)`
+      - Create a copy of a given graphics client
+    - `~GraphicsClient()`
+      - Destructor
+    - `void operator=(string newAddr)`
+      - Changes the address to connect to
+    - `int connection()`
+      - Initialises the connection to a server
+    - `int closeConnection()`
+      - Closes connection to server
+    - `void setBackgroundcolor(int r, int g, int b)`
+      - Given an R, G, and B value, it sends a message to the server for what colour the background should be
+    - `void setDrawingcolor(int r, int g, int b)`
+      - Given an R, G, and B value, it sends a message to the server for what colour the drawings should be
+    - `void clear()`
+      - Sends message to server to set entire image to background colour
+    - `void setPixel(int x, int y, int r, int g, int b)`
+      - Sends message to server to make one specific pixel a given RGB colour
+    - `void drawRectangle(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a rectangle outline of given width and height
+    - `void fillRectangle(int x, int y, int w, int h)`      
+      - Given a x, y coord, tells server to create a filled-in rectangle of given width and height
+    - `void clearRectangle(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to clear a rectangle of given width and height 
+    - `void drawOval(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a oval outline of given width and height
+    - `void fillOval(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a filled-in oval of given width and height
+    - `void drawline(int x, int y, int w, int h)`
+      - Given two sets of coords, tells the server to draw a straight line between them
+    - `void drawString(int x, int y, string out)`
+      - Given a set of coords and a string tells the server to print the string in said location
+    - `void repaint()`
+      - Refreshes the client's graphic to match the server's
+  - Private:
+    - `void zeroSet()`
+      - Helper method to configure the message before being used again
+    - `void shape(int x1, int y, int w, int h)`
+      - Used by ovals and rectangles to reduce redundant code
+    - `char *toCharArr(string in)`
+      - Makes strings into char arrays
+- `CellularAutomaton.h`
+  - Contains function headers and private variables for the class
     - `unsigned char **cadata`
-      - 2D Array that holds data
-    - `int wrap`
-      - Flag to indiciate if data should be wrapped or not
+      - 2D unsigned char array to hold states
+    - `int w`
+      - Holds the width of the scene
+    - `int h`
+      - Holds the height of the scene
     - `unsigned char qstate`
-      - Initial start state
-    - `int dimension`
-      - Flag if the array going to be 1D or 2D
-
----
-## Data Structures
-This programme utilises a struct that contains an array along with a few other primitive data types
+      - Holds the quiecent state of the game
+    - `int pixelGap`
+      - Holds the gap between each cell
+    - `int cellSize`
+      - Holds the size each cell should be
+- `CellularAutomaton.cpp`
+  - Public:
+    - `CellularAutomaton(string path, int qstate)`
+      - Constructor takes in a string for file path and an int quiencent state
+    - `CellularAutomaton(CellularAutomaton &copy)`
+      - Constructor that creates a copy from a given CellularAutomaton
+    - `~CellularAutomaton()`
+      - Destructor
+    - `void operator=(CellularAutomaton &copy)`
+      - Tells this CellularAutomaton to commit identity theft
+    - `int step(unsigned char (*rule)(CellularAutomaton, int, int))`
+      - Do a singular step / iteration through a given rule
+    - `void graphicalLink(GraphicsClient &gc)`
+      - Link to a given graphical client and use that to output / mirror what lies within `**cadata`
+    - `int getW()`
+      - Helper method to return the private value of width
+    - `int getH()`
+      - Helper method to return the private value of height
+    - `int getElement(int x, int y)`
+      - Helper method that returns the value of `cadata[y][x]`
+  - Private:
+    - `int setCell(unsigned int x, unsigned int y, unsigned char state)`
+      - Helper method to assign `cadata[y][x]` to a specific state
