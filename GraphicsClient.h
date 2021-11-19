@@ -46,5 +46,5 @@ private:
     char message[100];
     char *toCharArr(string in);
     void zeroSet();
-    void rectangle(int x1, int y1, int x2, int y2);
+    void shape(int x1, int y1, int x2, int y2);
 };
