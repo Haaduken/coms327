@@ -258,9 +258,13 @@ void GraphicsClient::drawline(int x1, int y1, int x2, int y2)
     message[19] = y2 >> 8;
     message[20] = y2 >> 4;
     message[21] = y2 & 0xF;
-    send(sockfd, message, 22, 0);
-}
+    for (int i = 0; i < 22; i++)
+    {
+        printf("0x%X\n", message[i]);
+    }
 
+    printf("%ld\n", send(sockfd, message, 22, 0));
+}
 void GraphicsClient::drawString(int x, int y, string out)
 {
     int size = out.size() * 2 + 9;
