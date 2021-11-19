@@ -16,9 +16,9 @@ public:
 
     int closeConnection();
 
-    void setBackgroundColour(int r, int g, int b);
+    void setBackgroundcolor(int r, int g, int b);
 
-    void setDrawingColour(int r, int g, int b);
+    void setDrawingcolor(int r, int g, int b);
 
     void clear();
 

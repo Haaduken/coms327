@@ -79,7 +79,7 @@ int GraphicsClient::closeConnection()
     return EXIT_SUCCESS;
 }
 
-void GraphicsClient::setBackgroundColour(int r, int g, int b)
+void GraphicsClient::setBackgroundcolor(int r, int g, int b)
 {
     zeroSet();
     message[1] = 0x00;     //size pt4
@@ -96,7 +96,7 @@ void GraphicsClient::setBackgroundColour(int r, int g, int b)
     send(sockfd, message, 12, 0);
 }
 
-void GraphicsClient::setDrawingColour(int r, int g, int b)
+void GraphicsClient::setDrawingcolor(int r, int g, int b)
 {
     zeroSet();
     message[1] = 0x00;     //size pt4

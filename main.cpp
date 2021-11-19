@@ -55,8 +55,8 @@ int main(int argc, char **argv)
 {
     GraphicsClient gc("127.0.0.1", 7777);
     gc.connection();
-    gc.setBackgroundColour(18, 11, 140);
-    gc.setDrawingColour(171, 10, 80);
+    gc.setBackgroundcolor(18, 11, 140);
+    gc.setDrawingcolor(171, 10, 80);
     gc.clear();
     gc.repaint();
     CellularAutomaton ca(argv[1], 0);
@@ -78,11 +78,11 @@ int main(int argc, char **argv)
     }
 
     // gc.connection();
-    // gc.setBackgroundColour(162, 21, 21);
+    // gc.setBackgroundcolor(162, 21, 21);
     // gc.clear();
     // gc.repaint();
     // sleep(1);
-    // gc.setDrawingColour(100, 255, 255);
+    // gc.setDrawingcolor(100, 255, 255);
     // gc.drawString(200, 200, "WHAT");
     // gc.drawString(50, 50, "toast");
     // gc.repaint();
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     //     if (check == 'c')
     //     {
     //         printf("clear\n");
-    //         gc.setBackgroundColour(rand() % 255, rand() % 255, rand() % 255);
+    //         gc.setBackgroundcolor(rand() % 255, rand() % 255, rand() % 255);
     //         gc.clear();
     //         gc.repaint();
     //     }
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     //     }
     //     else if (check == 'u')
     //     {
-    //         gc.setDrawingColour(rand() % 255, rand() % 255, rand() % 255);
+    //         gc.setDrawingcolor(rand() % 255, rand() % 255, rand() % 255);
     //         gc.drawOval(50, 50, 15, 30);
     //         // gc.fillOval(50, 50, 15, 30);
     //         gc.repaint();
