@@ -98,11 +98,11 @@ void CellularAutomaton::operator=(CellularAutomaton &copy)
     qstate = copy.qstate;
     w = copy.w;
     h = copy.h;
-    for (int j = 0; j < h; j++)
+    for (int y = 0; y < h; y++)
     {
-        for (int i = 0; i < w; i++)
+        for (int x = 0; x < w; x++)
         {
-            cadata[j][i] = copy.cadata[j][i];
+            setCell(x, y, copy.cadata[y][x]);
         }
     }
 }

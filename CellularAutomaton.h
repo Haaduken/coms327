@@ -11,7 +11,7 @@ public:
     ~CellularAutomaton();
     void operator=(CellularAutomaton &copy);
     int step(unsigned char (*rule)(CellularAutomaton, int, int));
-    void graphicalLink(GraphicsClient &ref);
+    void graphicalLink(GraphicsClient &gc);
     int getW();
     int getH();
     int getElement(int x, int y);
