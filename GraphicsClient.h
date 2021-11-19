@@ -24,17 +24,17 @@ public:
 
     void setPixel(int x, int y, int r, int g, int b);
 
-    void drawRectangle(int x1, int y1, int x2, int y2);
+    void drawRectangle(int x, int y, int w, int h);
 
-    void fillRectangle(int x1, int y1, int x2, int y2);
+    void fillRectangle(int x, int y, int w, int h);
 
-    void clearRectangle(int x1, int y1, int x2, int y2);
+    void clearRectangle(int x, int y, int w, int h);
 
-    void drawOval(int x1, int y1, int x2, int y2);
+    void drawOval(int x, int y, int w, int h);
 
-    void fillOval(int x1, int y1, int x2, int y2);
+    void fillOval(int x, int y, int w, int h);
 
-    void drawline(int x1, int y1, int x2, int y2);
+    void drawline(int x, int y, int w, int h);
 
     void drawString(int x, int y, string out);
 
@@ -46,5 +46,5 @@ private:
     char message[100];
     char *toCharArr(string in);
     void zeroSet();
-    void shape(int x1, int y1, int x2, int y2);
+    void shape(int x1, int y, int w, int h);
 };

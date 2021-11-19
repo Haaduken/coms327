@@ -34,7 +34,7 @@ GraphicsClient::GraphicsClient(GraphicsClient &copy)
 
 GraphicsClient::~GraphicsClient()
 {
-    // delete this;
+    closeConnection();
 }
 
 void GraphicsClient::operator=(string newAddr)
@@ -171,99 +171,95 @@ void GraphicsClient::setPixel(int x, int y, int r, int g, int b)
     send(sockfd, message, 20, 0);
 }
 
-void GraphicsClient::drawRectangle(int x1, int y1, int x2, int y2)
+void GraphicsClient::drawRectangle(int x, int y, int w, int h)
 {
 
     zeroSet();
     message[1] = 0x00; //size pt4
     message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x11; //size pt1
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
     message[5] = 0x07; //cmd
-    shape(x1, y1, x2, y2);
+    shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
 
-void GraphicsClient::fillRectangle(int x1, int y1, int x2, int y2)
+void GraphicsClient::fillRectangle(int x, int y, int w, int h)
 {
-    int w = x2 - x1;
-    int h = y2 - y1;
     zeroSet();
     message[1] = 0x00; //size pt4
     message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x11; //size pt1
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
     message[5] = 0x08; //cmd
-    shape(x1, y1, x2, y2);
-    send(sockfd, message, 22, 0);
-}
-
-void GraphicsClient::clearRectangle(int x1, int y1, int x2, int y2)
-{
-    zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x11; //size pt1
-    message[5] = 0x09; //cmd
-    shape(x1, y1, x2, y2);
-    send(sockfd, message, 22, 0);
-}
-// TODO
-void GraphicsClient::drawOval(int x1, int y1, int x2, int y2)
-{
-    zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x07; //size pt1
-    message[5] = 0x0A; //cmd
-    send(sockfd, message, 12, 0);
-}
-
-// TODO
-void GraphicsClient::fillOval(int x1, int y1, int x2, int y2)
-{
-    zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x07; //size pt1
-    message[5] = 0x0B; //cmd
-    shape(x1, y1, x2, y2);
-    send(sockfd, message, 12, 0);
-}
-
-//TODO
-void GraphicsClient::drawline(int x1, int y1, int x2, int y2)
-{
-    zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0xA1; //size pt1
-    message[5] = 0x0D; //cmd
-    message[6] = x1 >> 12;
-    message[7] = x1 >> 8;
-    message[8] = x1 >> 4;
-    message[9] = x1 & 0xF;
-    message[10] = y1 >> 12;
-    message[11] = y1 >> 8;
-    message[12] = y1 >> 4;
-    message[13] = y1 & 0xF;
-    message[14] = x2 >> 12;
-    message[15] = x2 >> 8;
-    message[16] = x2 >> 4;
-    message[17] = x2 & 0xF;
-    message[18] = y2 >> 12;
-    message[19] = y2 >> 8;
-    message[20] = y2 >> 4;
-    message[21] = y2 & 0xF;
+    shape(x, y, w, h);
     for (int i = 0; i < 22; i++)
     {
         printf("0x%X\n", message[i]);
     }
+    send(sockfd, message, 22, 0);
+}
 
+void GraphicsClient::clearRectangle(int x, int y, int w, int h)
+{
+    zeroSet();
+    message[1] = 0x00; //size pt4
+    message[2] = 0x00; //size pt3
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
+    message[5] = 0x09; //cmd
+    shape(x, y, w, h);
+    send(sockfd, message, 22, 0);
+}
+
+void GraphicsClient::drawOval(int x, int y, int w, int h)
+{
+    zeroSet();
+    message[1] = 0x00; //size pt4
+    message[2] = 0x00; //size pt3
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
+    message[5] = 0x0A; //cmd
+    shape(x, y, w, h);
+    send(sockfd, message, 22, 0);
+}
+
+void GraphicsClient::fillOval(int x, int y, int w, int h)
+{
+    zeroSet();
+    message[1] = 0x00; //size pt4
+    message[2] = 0x00; //size pt3
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
+    message[5] = 0x0B; //cmd
+    shape(x, y, w, h);
+    send(sockfd, message, 22, 0);
+}
+
+void GraphicsClient::drawline(int x, int y, int w, int h)
+{
+    zeroSet();
+    message[1] = 0x00; //size pt4
+    message[2] = 0x00; //size pt3
+    message[3] = 0x01; //size pt2
+    message[4] = 0x01; //size pt1
+    message[5] = 0x0D; //cmd
+    message[6] = x >> 12;
+    message[7] = x >> 8;
+    message[8] = x >> 4;
+    message[9] = x & 0xF;
+    message[10] = y >> 12;
+    message[11] = y >> 8;
+    message[12] = y >> 4;
+    message[13] = y & 0xF;
+    message[14] = w >> 12;
+    message[15] = w >> 8;
+    message[16] = w >> 4;
+    message[17] = w & 0xF;
+    message[18] = h >> 12;
+    message[19] = h >> 8;
+    message[20] = h >> 4;
+    message[21] = h & 0xF;
     printf("%ld\n", send(sockfd, message, 22, 0));
 }
 void GraphicsClient::drawString(int x, int y, string out)
@@ -326,18 +322,16 @@ void GraphicsClient::zeroSet()
     message[0] = 0xFF;
 }
 
-void GraphicsClient::shape(int x1, int y1, int x2, int y2)
+void GraphicsClient::shape(int x, int y, int w, int h)
 {
-    int w = x2 - x1;
-    int h = y2 - y1;
-    message[6] = x1 >> 12;
-    message[7] = x1 >> 8;
-    message[8] = x1 >> 4;
-    message[9] = x1 & 0xF;
-    message[10] = y1 >> 12;
-    message[11] = y1 >> 8;
-    message[12] = y1 >> 4;
-    message[13] = y1 & 0xF;
+    message[6] = x >> 12;
+    message[7] = x >> 8;
+    message[8] = x >> 4;
+    message[9] = x & 0xF;
+    message[10] = y >> 12;
+    message[11] = y >> 8;
+    message[12] = y >> 4;
+    message[13] = y & 0xF;
     message[14] = w >> 12;
     message[15] = w >> 8;
     message[16] = w >> 4;

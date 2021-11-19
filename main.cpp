@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         if (check == 'c')
         {
             printf("clear\n");
-            gc.setBackgroundColour(0, 0, 0);
+            gc.setBackgroundColour(rand() % 255, rand() % 255, rand() % 255);
             gc.clear();
             gc.repaint();
         }
@@ -43,6 +43,15 @@ int main(int argc, char **argv)
         else if (check == 'o')
         {
             gc.fillRectangle(100, 100, 200, 200);
+            gc.drawRectangle(15, 15, 10, 10);
+            gc.clearRectangle(200, 200, 10, 10);
+            gc.repaint();
+        }
+        else if (check == 'u')
+        {
+            gc.setDrawingColour(rand() % 255, rand() % 255, rand() % 255);
+            gc.drawOval(50, 50, 15, 30);
+            // gc.fillOval(50, 50, 15, 30);
             gc.repaint();
         }
         else if (check == 'i')
