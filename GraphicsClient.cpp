@@ -70,28 +70,6 @@ int GraphicsClient::connection()
         return -1;
     }
 
-    // message[0] = 0xFF;
-    // message[1] = 0x00;
-    // message[2] = 0x00;
-    // message[3] = 0x00;
-    // message[4] = 0x07;
-    // message[5] = 0x02;
-    // message[6] = 0x00;
-    // message[7] = 0x05;
-    // message[8] = 0x0F;
-    // message[9] = 0x0F;
-    // message[10] = 0x00;
-    // message[11] = 0x00;
-
-    // send(sockfd, message, 12, 0);
-
-    // message[4] = 0x01;
-    // message[5] = 0x01;
-    // send(sockfd, message, 6, 0);
-
-    // message[5] = 0x0C;
-    // send(sockfd, message, 6, 0);
-
     return 1;
 }
 
