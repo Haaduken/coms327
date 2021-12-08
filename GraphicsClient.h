@@ -1,6 +1,12 @@
 #include <iostream>
 using namespace std;
 
+struct mouseClick
+{
+    int x;
+    int y;
+} click;
+
 class GraphicsClient
 {
 public:
@@ -22,6 +28,9 @@ public:
     void drawline(int x, int y, int w, int h);
     void drawString(int x, int y, string out);
     void repaint();
+    int whichButton(button arr[]);
+    void clickDetection();
+    string load();
 
 private:
     int port;

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <iostream>
+#include "button.h"
 using namespace std;
 
 GraphicsClient::GraphicsClient(string _addr, int _port)
@@ -82,34 +83,34 @@ int GraphicsClient::closeConnection()
 void GraphicsClient::setBackgroundcolor(int r, int g, int b)
 {
     zeroSet();
-    message[1] = 0x00;     //size pt4
-    message[2] = 0x00;     //size pt3
-    message[3] = 0x00;     //size pt2
-    message[4] = 0x07;     //size pt1
-    message[5] = 0x02;     //cmd
-    message[6] = r >> 4;   //red upper
-    message[7] = r & 0xF;  //red lower
-    message[8] = g >> 4;   //green upper
-    message[9] = g & 0xF;  //green lower
-    message[10] = b >> 4;  //blue upper
-    message[11] = b & 0xF; //blue lower
+    message[1] = 0x00;     // size pt4
+    message[2] = 0x00;     // size pt3
+    message[3] = 0x00;     // size pt2
+    message[4] = 0x07;     // size pt1
+    message[5] = 0x02;     // cmd
+    message[6] = r >> 4;   // red upper
+    message[7] = r & 0xF;  // red lower
+    message[8] = g >> 4;   // green upper
+    message[9] = g & 0xF;  // green lower
+    message[10] = b >> 4;  // blue upper
+    message[11] = b & 0xF; // blue lower
     send(sockfd, message, 12, 0);
 }
 
 void GraphicsClient::setDrawingcolor(int r, int g, int b)
 {
     zeroSet();
-    message[1] = 0x00;     //size pt4
-    message[2] = 0x00;     //size pt3
-    message[3] = 0x00;     //size pt2
-    message[4] = 0x07;     //size pt1
-    message[5] = 0x06;     //cmd
-    message[6] = r >> 4;   //red upper
-    message[7] = r & 0xF;  //red lower
-    message[8] = g >> 4;   //green upper
-    message[9] = g & 0xF;  //green lower
-    message[10] = b >> 4;  //blue upper
-    message[11] = b & 0xF; //blue lower
+    message[1] = 0x00;     // size pt4
+    message[2] = 0x00;     // size pt3
+    message[3] = 0x00;     // size pt2
+    message[4] = 0x07;     // size pt1
+    message[5] = 0x06;     // cmd
+    message[6] = r >> 4;   // red upper
+    message[7] = r & 0xF;  // red lower
+    message[8] = g >> 4;   // green upper
+    message[9] = g & 0xF;  // green lower
+    message[10] = b >> 4;  // blue upper
+    message[11] = b & 0xF; // blue lower
     send(sockfd, message, 12, 0);
 }
 
@@ -127,11 +128,11 @@ void GraphicsClient::clear()
 void GraphicsClient::setPixel(int x, int y, int r, int g, int b)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x0F; //size pt1
-    message[5] = 0x03; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x00; // size pt2
+    message[4] = 0x0F; // size pt1
+    message[5] = 0x03; // cmd
     message[6] = x >> 12;
     message[7] = (x >> 8) & 0xF;
     message[8] = (x >> 4) & 0xF;
@@ -140,12 +141,12 @@ void GraphicsClient::setPixel(int x, int y, int r, int g, int b)
     message[11] = (y >> 8) & 0xF;
     message[12] = (y >> 4) & 0xF;
     message[13] = y & 0xF;
-    message[14] = r >> 4;  //red upper
-    message[15] = r & 0xF; //red lower
-    message[16] = g >> 4;  //green upper
-    message[17] = g & 0xF; //green lower
-    message[18] = b >> 4;  //blue upper
-    message[19] = b & 0xF; //blue lower
+    message[14] = r >> 4;  // red upper
+    message[15] = r & 0xF; // red lower
+    message[16] = g >> 4;  // green upper
+    message[17] = g & 0xF; // green lower
+    message[18] = b >> 4;  // blue upper
+    message[19] = b & 0xF; // blue lower
     send(sockfd, message, 20, 0);
 }
 
@@ -153,11 +154,11 @@ void GraphicsClient::drawRectangle(int x, int y, int w, int h)
 {
 
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x07; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x07; // cmd
     shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
@@ -165,11 +166,11 @@ void GraphicsClient::drawRectangle(int x, int y, int w, int h)
 void GraphicsClient::fillRectangle(int x, int y, int w, int h)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x08; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x08; // cmd
     shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
@@ -177,11 +178,11 @@ void GraphicsClient::fillRectangle(int x, int y, int w, int h)
 void GraphicsClient::clearRectangle(int x, int y, int w, int h)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x09; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x09; // cmd
     shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
@@ -189,11 +190,11 @@ void GraphicsClient::clearRectangle(int x, int y, int w, int h)
 void GraphicsClient::drawOval(int x, int y, int w, int h)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x0A; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x0A; // cmd
     shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
@@ -201,11 +202,11 @@ void GraphicsClient::drawOval(int x, int y, int w, int h)
 void GraphicsClient::fillOval(int x, int y, int w, int h)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x0B; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x0B; // cmd
     shape(x, y, w, h);
     send(sockfd, message, 22, 0);
 }
@@ -213,11 +214,11 @@ void GraphicsClient::fillOval(int x, int y, int w, int h)
 void GraphicsClient::drawline(int x, int y, int w, int h)
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x01; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x0D; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x01; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x0D; // cmd
     message[6] = x >> 12;
     message[7] = (x >> 8) & 0xF;
     message[8] = (x >> 4) & 0xF;
@@ -241,11 +242,11 @@ void GraphicsClient::drawString(int x, int y, string out)
     int size = out.size() * 2 + 9;
     char *arr = toCharArr(out);
     zeroSet();
-    message[1] = size >> 12; //size pt4
-    message[2] = size >> 8;  //size pt3
-    message[3] = size >> 4;  //size pt2
-    message[4] = size & 0xF; //size pt1
-    message[5] = 0x05;       //cmd
+    message[1] = size >> 12; // size pt4
+    message[2] = size >> 8;  // size pt3
+    message[3] = size >> 4;  // size pt2
+    message[4] = size & 0xF; // size pt1
+    message[5] = 0x05;       // cmd
     message[6] = x >> 12;
     message[7] = (x >> 8) & 0xF;
     message[8] = (x >> 4) & 0xF;
@@ -272,11 +273,11 @@ void GraphicsClient::drawString(int x, int y, string out)
 void GraphicsClient::repaint()
 {
     zeroSet();
-    message[1] = 0x00; //size pt4
-    message[2] = 0x00; //size pt3
-    message[3] = 0x00; //size pt2
-    message[4] = 0x01; //size pt1
-    message[5] = 0x0C; //cmd
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x00; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x0C; // cmd
     send(sockfd, message, 6, 0);
 }
 
@@ -320,4 +321,18 @@ void GraphicsClient::shape(int x, int y, int w, int h)
     //     printf("%d:0x%X\n", i, message[i]);
     // }
     // printf("%d %d %d %d\n", x, y, w, h);
+}
+
+int GraphicsClient::whichButton(button arr[])
+{
+    for (int i = 0; i < 11; i++)
+    {
+        if (arr[i].within(click.x, click.y))
+            return i;
+    }
+    return -1;
+}
+
+void GraphicsClient::clickDetection()
+{
 }

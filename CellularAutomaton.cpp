@@ -146,6 +146,8 @@ void CellularAutomaton::graphicalLink(GraphicsClient &gc)
 }
 int CellularAutomaton::getH() { return h; }
 int CellularAutomaton::getW() { return w; }
+void CellularAutomaton::setW(int b) { w = b; }
+void CellularAutomaton::setH(int b) { h = b; }
 int CellularAutomaton::getElement(int h, int w) { return cadata[h][w]; }
 int CellularAutomaton::setCell(unsigned int x, unsigned int y, unsigned char state)
 {

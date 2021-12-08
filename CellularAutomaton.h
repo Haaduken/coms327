@@ -13,8 +13,11 @@ public:
     int step(unsigned char (*rule)(CellularAutomaton, int, int));
     void graphicalLink(GraphicsClient &gc);
     int getW();
+    void setW(int b);
     int getH();
+    void setH(int b);
     int getElement(int x, int y);
+    int setCell(unsigned int x, unsigned int y, unsigned char state);
 
 private:
     unsigned char **cadata;
@@ -22,5 +25,4 @@ private:
     int h;
     unsigned char qstate;
     int pixelGap, cellSize;
-    int setCell(unsigned int x, unsigned int y, unsigned char state);
 };
