@@ -1,5 +1,5 @@
 DEPS := GraphicsClient.o main.o CellularAutomaton.o
-BIN := sand
+BIN := gol
 
 all: build
 
