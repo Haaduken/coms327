@@ -1,7 +1,7 @@
 #Executeable
 *.out
 *.exe
-sand
+gol
 #*.jar
 
 #Compiled Object Files
