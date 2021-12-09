@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <iostream>
-#include "button.h"
+#include <sys/ioctl.h>
 using namespace std;
 
 GraphicsClient::GraphicsClient(string _addr, int _port)
@@ -335,4 +335,77 @@ int GraphicsClient::whichButton(button arr[])
 
 void GraphicsClient::clickDetection()
 {
+    int newCMD;
+    ioctl(sockfd, FIONREAD, &newCMD);
+    if (newCMD <= 0)
+    {
+        click.x = -1;
+        click.y = -1;
+        return;
+    }
+    const int size = 0xF;
+
+    unsigned char *input = new unsigned char[size];
+
+    int read = recv(sockfd, input, size, 0);
+
+    if (read <= 0)
+    {
+        fprintf(stderr, "Connection Error \n");
+        click.x = -1;
+        click.y = -1;
+        return;
+    }
+
+    int inputType = input[5];
+    int buttonType = input[6];
+    if (inputType == 3)
+    {
+        click.x = ((input[7] << 4) | (input[8] & 0x0F) << 8) | ((input[9] << 4) | (input[10] & 0x0F) & 0x00FF);
+        click.y = ((input[11] << 4) | (input[12] & 0x0F) << 8) | ((input[13] << 4) | (input[14] & 0x0F) & 0x00FF);
+    }
+}
+
+void GraphicsClient::clearDrawSpace()
+{
+    clearRectangle(0, 0, 600, 600);
+}
+
+string GraphicsClient::load()
+{
+    zeroSet();
+    message[1] = 0x00; // size pt4
+    message[2] = 0x00; // size pt3
+    message[3] = 0x00; // size pt2
+    message[4] = 0x01; // size pt1
+    message[5] = 0x0E; // cmd
+    send(sockfd, message, 6, 0);
+
+    int read = recv(sockfd, message, 5, 0);
+    if (read <= 0)
+    {
+    error:
+        fprintf(stderr, "Reading in file error\n");
+        return "DOUG DIMMA WRONG";
+    }
+
+    short size = ((message[1] << 4) | (message[2] & 0x0F) << 8) | ((message[3] << 4) | (message[4] & 0x0F) & 0x00FF);
+
+    read = recv(sockfd, message, size, 0);
+    if (read <= 0)
+        goto error;
+
+    char arr[100];
+    int i;
+    int j;
+    for (i = 1, j = 0; i < size; i += 2, j++)
+    {
+        // printf("%X %X ", message[i], message[i + 1]);
+        arr[j] = (message[i] << 4) | (message[i + 1] & 0x0F);
+        // printf("%c\n", arr[i]);
+    }
+    // printf("\n%s\n", arr);
+    string out = string(arr, j);
+    // printf("%s\n", out.c_str());
+    return out;
 }

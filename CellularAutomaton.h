@@ -18,6 +18,7 @@ public:
     void setH(int b);
     int getElement(int x, int y);
     int setCell(unsigned int x, unsigned int y, unsigned char state);
+    void createCA();
 
 private:
     unsigned char **cadata;

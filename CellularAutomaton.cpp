@@ -18,11 +18,7 @@ CellularAutomaton::CellularAutomaton(string path, int state)
     unsigned char *str = new unsigned char[6];
     fscanf(f, "%d %d", &h, &w);
 
-    cadata = new unsigned char *[h];
-    for (int i = 0; i < h; i++)
-    {
-        cadata[i] = new unsigned char[w];
-    }
+    createCA();
 
     unsigned int waF;
     for (int y = 0; y < h; y++)
@@ -38,29 +34,6 @@ CellularAutomaton::CellularAutomaton(string path, int state)
         }
     }
 
-    int mode = max(h, w);
-    if (mode < 1)
-        exit(-1);
-    else if (mode <= 50)
-    {
-        cellSize = 10;
-        pixelGap = 2;
-    }
-    else if (mode <= 100)
-    {
-        cellSize = 4;
-        pixelGap = 1;
-    }
-    else if (mode <= 200)
-    {
-        cellSize = 2;
-        pixelGap = 1;
-    }
-    else if (mode <= 600)
-    {
-        cellSize = 1;
-        pixelGap = 0;
-    }
     delete str;
     fclose(f);
 }
@@ -121,8 +94,33 @@ int CellularAutomaton::step(unsigned char (*rule)(CellularAutomaton, int, int))
 }
 void CellularAutomaton::graphicalLink(GraphicsClient &gc)
 {
+    int mode = max(h, w);
+    if (mode < 1)
+        exit(-1);
+    else if (mode <= 50)
+    {
+        cellSize = 10;
+        pixelGap = 2;
+    }
+    else if (mode <= 100)
+    {
+        cellSize = 4;
+        pixelGap = 1;
+    }
+    else if (mode <= 200)
+    {
+        cellSize = 2;
+        pixelGap = 1;
+    }
+    else if (mode <= 600)
+    {
+        cellSize = 1;
+        pixelGap = 0;
+    }
+
     int _x = 0, _y = 0;
-    gc.clear();
+    // gc.clear();
+    gc.clearDrawSpace();
     gc.repaint();
     for (int y = 0; y < h; y++)
     {
@@ -133,6 +131,10 @@ void CellularAutomaton::graphicalLink(GraphicsClient &gc)
                 // printf("OI\n");
 
                 gc.fillRectangle(_x, _y, cellSize, cellSize);
+            }
+            else
+            {
+                gc.drawRectangle(_x, _y, cellSize, cellSize);
             }
             // printf("x: %d, y: %d, pixGap: %d\n", _x, _y, pixelGap);
             _x += pixelGap;
@@ -146,8 +148,14 @@ void CellularAutomaton::graphicalLink(GraphicsClient &gc)
 }
 int CellularAutomaton::getH() { return h; }
 int CellularAutomaton::getW() { return w; }
-void CellularAutomaton::setW(int b) { w = b; }
-void CellularAutomaton::setH(int b) { h = b; }
+void CellularAutomaton::setW(int b)
+{
+    w = b;
+}
+void CellularAutomaton::setH(int b)
+{
+    h = b;
+}
 int CellularAutomaton::getElement(int h, int w) { return cadata[h][w]; }
 int CellularAutomaton::setCell(unsigned int x, unsigned int y, unsigned char state)
 {
@@ -155,4 +163,13 @@ int CellularAutomaton::setCell(unsigned int x, unsigned int y, unsigned char sta
         return 0;
     cadata[y][x] = state;
     return 1;
+}
+
+void CellularAutomaton::createCA()
+{
+    cadata = new unsigned char *[h];
+    for (int i = 0; i < h; i++)
+    {
+        cadata[i] = new unsigned char[w];
+    }
 }

@@ -1,11 +1,12 @@
 #include <iostream>
+#include "button.h"
 using namespace std;
 
 struct mouseClick
 {
     int x;
     int y;
-} click;
+};
 
 class GraphicsClient
 {
@@ -30,9 +31,11 @@ public:
     void repaint();
     int whichButton(button arr[]);
     void clickDetection();
+    void clearDrawSpace();
     string load();
 
 private:
+    mouseClick click;
     int port;
     int sockfd;
     string addr;
