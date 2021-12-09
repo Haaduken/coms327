@@ -93,6 +93,5 @@
       - Helper method to return the private value of height
     - `int getElement(int x, int y)`
       - Helper method that returns the value of `cadata[y][x]`
-  - Private:
     - `int setCell(unsigned int x, unsigned int y, unsigned char state)`
       - Helper method to assign `cadata[y][x]` to a specific state
