@@ -2,10 +2,10 @@
 #include <cstddef>
 #include <iostream>
 #include <unistd.h>
-#include "button.h"
 using namespace std;
 
 int running = 0;
+int caExists = 0;
 
 unsigned char CGOL(CellularAutomaton ca, int x, int y)
 {
@@ -108,7 +108,6 @@ int main(int argc, char **argv)
     gc.connection();
     makeGUI(gc);
     int option = -1;
-    timespec sleep = {100};
     CellularAutomaton *ca;
     button options[11] = {
         button(650, 725, 50, 100),   // step
@@ -124,60 +123,112 @@ int main(int argc, char **argv)
         button(725, 775, 525, 575)}; // 3
 
 loop:
+    gc.clickDetection();
     option = gc.whichButton(options);
     switch (option)
     {
     case 0: // step
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         ca->step(CGOL);
         ca->graphicalLink(gc);
         goto norm;
     case 1: // run
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         running = 1;
         goto norm;
     case 2: // pause
         running = 0;
         goto norm;
     case 3: // reset
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
+        ca = new CellularAutomaton(argv[1], 0);
+        ca->graphicalLink(gc);
         goto norm;
     case 4: // random
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         for (int y = 0; y < ca->getH(); y++)
             for (int x = 0; x < ca->getW(); x++)
                 ca->setCell(x, y, rand() % 2);
+        ca->graphicalLink(gc);
         goto norm;
     case 5: // load
         ca = new CellularAutomaton(gc.load(), 0);
+        caExists = 1;
+        ca->graphicalLink(gc);
         goto norm;
     case 6: // clear
+    clear:
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         for (int y = 0; y < ca->getH(); y++)
             for (int x = 0; x < ca->getW(); x++)
                 ca->setCell(x, y, 0);
+        gc.clearDrawSpace();
+        ca->graphicalLink(gc);
         goto norm;
     case 7: // quit
+        gc.closeConnection();
         exit(1);
     case 8: // set size 1
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         ca->setH(600);
         ca->setW(600);
-        break;
+        ca->createCA();
+        goto clear;
     case 9: // set size 2
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         ca->setH(150);
         ca->setW(150);
-        break;
+        ca->createCA();
+        goto clear;
     case 10: // set size 3
+        if (!caExists)
+        {
+            printf("Load a file first!\n");
+            goto norm;
+        }
         ca->setH(40);
         ca->setW(40);
-        break;
+        ca->createCA();
+        goto clear;
     default:
     norm:
         if (running)
         {
             ca->step(CGOL);
             ca->graphicalLink(gc);
-            nanosleep(&sleep, NULL);
+            usleep(100000);
         }
-        break;
+        option = -1;
+        goto loop;
     }
 
     goto loop;
-
-    gc.closeConnection();
 }
