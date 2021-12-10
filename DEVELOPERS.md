@@ -6,6 +6,9 @@
     - Checks values of the 2D array within the struct to determine what to output, follows Conway's Game Of Life rules
     - Output: `0` `1` or `data->cadata[y][x]`'s value if it is neither `1` or `0`
   - `int main(int argc, char **argv)`
+    - Creates array of buttons that the GUI cooralates to, and loops through the main portion of the programme.
+  - `int makeGUI(GraphicsClient &gc)`
+    - Creates the interactable GUI
 - `GraphicsClient.h`
   - Contains function headers and private variables for the class
     - `int port`
@@ -14,6 +17,8 @@
       - Holds the address to connect to
     - `char message[100]`
       - Holds data for the message to be sent to said connection
+    - `mouseClick click`
+      - Struct for keeping track the coords of the mouse click
 - `GraphicsClient.cpp`
   - Public:
     - `GraphicsClient(string _addr, int _port)`
@@ -52,6 +57,16 @@
       - Given a set of coords and a string tells the server to print the string in said location
     - `void repaint()`
       - Refreshes the client's graphic to match the server's
+    - `int whichButton(button arr[])`
+      - Returns the index of the button pushed in the array for use elsewhere
+    - `int whichButton(vector<button> arr)`
+      - returns the index of the button pushed in the vector for use elsewhere
+    - `void clickDetection()`
+      - checks if a click has occured in the GUI
+    - `void clearDrawSpace()`
+      - Clears the area which is being used for the simulation, but not the interactables
+    - `string load()`
+      - contacts the graphics server to coordinate file loading
   - Private:
     - `void zeroSet()`
       - Helper method to configure the message before being used again
@@ -73,6 +88,9 @@
       - Holds the gap between each cell
     - `int cellSize`
       - Holds the size each cell should be
+    - `vector<vector<button>> cells`
+      - Holds a parallel 2D array of buttons to cadata for manual input
+
 - `CellularAutomaton.cpp`
   - Public:
     - `CellularAutomaton(string path, int qstate)`
@@ -95,3 +113,12 @@
       - Helper method that returns the value of `cadata[y][x]`
     - `int setCell(unsigned int x, unsigned int y, unsigned char state)`
       - Helper method to assign `cadata[y][x]` to a specific state
+    - `int getCell(unsigned int x, unsigned int y)`
+      - returns the value of the cell at the given coords    
+    - `int getW()`
+      - Helper method to set the private value of width
+    - `int getH()`
+      - Helper method to set the private value of height
+    - `void createCA()`
+      - Helper method to create (or recreate) the CA 
+
