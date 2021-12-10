@@ -10,7 +10,7 @@ public:
         y1 = _y1;
         y2 = _y2;
     }
-
+    button() {}
     int within(int x, int y) { return (x1 <= x && x <= x2 && y1 <= y && y <= y2); }
 
 private:
