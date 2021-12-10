@@ -6,6 +6,8 @@ using namespace std;
 
 int running = 0;
 int caExists = 0;
+int isRandom = 0;
+string file;
 
 unsigned char CGOL(CellularAutomaton ca, int x, int y)
 {
@@ -125,6 +127,20 @@ int main(int argc, char **argv)
 loop:
     gc.clickDetection();
     option = gc.whichButton(options);
+    int x;
+    if (caExists)
+    {
+        for (int y = 0; y < ca->getH(); y++)
+        {
+            x = gc.whichButton(ca->cells[y]);
+            if (x >= 0)
+            {
+                ca->setCell(x, y, (ca->getCell(x, y) + 1) % 2);
+                ca->graphicalLink(gc);
+            }
+        }
+    }
+
     switch (option)
     {
     case 0: // step
@@ -153,7 +169,15 @@ loop:
             printf("Load a file first!\n");
             goto norm;
         }
-        ca = new CellularAutomaton(argv[1], 0);
+        if (isRandom)
+        {
+            goto clear;
+        }
+        else
+        {
+            ca = new CellularAutomaton(file, 0);
+        }
+        running = 0;
         ca->graphicalLink(gc);
         goto norm;
     case 4: // random
@@ -162,14 +186,16 @@ loop:
             printf("Load a file first!\n");
             goto norm;
         }
+        isRandom = 1;
         for (int y = 0; y < ca->getH(); y++)
             for (int x = 0; x < ca->getW(); x++)
                 ca->setCell(x, y, rand() % 2);
         ca->graphicalLink(gc);
         goto norm;
     case 5: // load
-        ca = new CellularAutomaton(gc.load(), 0);
+        ca = new CellularAutomaton(file = gc.load(), 0);
         caExists = 1;
+        isRandom = 0;
         ca->graphicalLink(gc);
         goto norm;
     case 6: // clear
@@ -229,6 +255,4 @@ loop:
         option = -1;
         goto loop;
     }
-
-    goto loop;
 }

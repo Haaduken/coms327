@@ -94,6 +94,7 @@ int CellularAutomaton::step(unsigned char (*rule)(CellularAutomaton, int, int))
 }
 void CellularAutomaton::graphicalLink(GraphicsClient &gc)
 {
+    int borders = 1;
     int mode = max(h, w);
     if (mode < 1)
         exit(-1);
@@ -109,11 +110,13 @@ void CellularAutomaton::graphicalLink(GraphicsClient &gc)
     }
     else if (mode <= 200)
     {
+        borders = 0;
         cellSize = 2;
         pixelGap = 1;
     }
     else if (mode <= 600)
     {
+        borders = 0;
         cellSize = 1;
         pixelGap = 0;
     }
@@ -134,9 +137,13 @@ void CellularAutomaton::graphicalLink(GraphicsClient &gc)
             }
             else
             {
-                gc.drawRectangle(_x, _y, cellSize, cellSize);
+                if (borders)
+                    gc.drawRectangle(_x, _y, cellSize, cellSize);
             }
             // printf("x: %d, y: %d, pixGap: %d\n", _x, _y, pixelGap);
+            // printf("pre-button\n");
+            cells[y][x] = button(_x, _x + cellSize, _y, _y + cellSize);
+            // printf("post-button\n");
             _x += pixelGap;
             _x += cellSize;
         }
@@ -161,15 +168,21 @@ int CellularAutomaton::setCell(unsigned int x, unsigned int y, unsigned char sta
 {
     if (x > w || y > w)
         return 0;
+    // printf("%d\n", cadata[y][x]);
     cadata[y][x] = state;
+    // printf("%d\n", cadata[y][x]);
+
     return 1;
 }
+int CellularAutomaton::getCell(unsigned int x, unsigned int y) { return cadata[y][x]; }
 
 void CellularAutomaton::createCA()
 {
     cadata = new unsigned char *[h];
+    cells.resize(h);
     for (int i = 0; i < h; i++)
     {
+        cells[i].resize(w);
         cadata[i] = new unsigned char[w];
     }
 }

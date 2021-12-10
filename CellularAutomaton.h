@@ -1,6 +1,5 @@
 #include <iostream>
 #include "GraphicsClient.h"
-
 using namespace std;
 
 class CellularAutomaton
@@ -18,7 +17,9 @@ public:
     void setH(int b);
     int getElement(int x, int y);
     int setCell(unsigned int x, unsigned int y, unsigned char state);
+    int getCell(unsigned int x, unsigned int y);
     void createCA();
+    vector<vector<button>> cells;
 
 private:
     unsigned char **cadata;

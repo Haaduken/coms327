@@ -1,5 +1,7 @@
 #include <iostream>
 #include "button.h"
+#include <vector>
+
 using namespace std;
 
 struct mouseClick
@@ -30,6 +32,7 @@ public:
     void drawString(int x, int y, string out);
     void repaint();
     int whichButton(button arr[]);
+    int whichButton(vector<button> arr);
     void clickDetection();
     void clearDrawSpace();
     string load();

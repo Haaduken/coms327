@@ -333,6 +333,16 @@ int GraphicsClient::whichButton(button arr[])
     return -1;
 }
 
+int GraphicsClient::whichButton(vector<button> arr)
+{
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (arr[i].within(click.x, click.y))
+            return i;
+    }
+    return -1;
+}
+
 void GraphicsClient::clickDetection()
 {
     int newCMD;
@@ -392,7 +402,8 @@ string GraphicsClient::load()
     short size = ((message[1] << 4) | (message[2] & 0x0F) << 8) | ((message[3] << 4) | (message[4] & 0x0F) & 0x00FF);
 
     read = recv(sockfd, message, size, 0);
-    if (read <= 0)
+    // printf("%X\n", message[0]);
+    if (read <= 0 || message[0] != 0xA)
         goto error;
 
     char arr[100];
