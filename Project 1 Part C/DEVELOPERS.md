@@ -1,0 +1,72 @@
+# Computer Science 327 Part B - DEVELOPERS
+## Short Summary of Each Source File
+- `main.c`
+  - Runs base code utilising the dca1d
+  - Methods
+    - `main(int argc, char **argv)`
+      - Inputs: 2 additional command line arguments in the following order
+        - `int` of either `1` or `2` to determine how many dimensions are needed
+        - `file path` to a file containing the `rows` and `cols` in that order, then the initial state 
+      - Actions: checks all input vals to make sure they are valid, creates a DCA accordingly
+      - Outputs: to terminal if there are errors
+    - `unsigned char CGOL(struct ca_data *data, int x, int y)`
+      - Inputs: pointer to a struct of ca_data, the x coordinate to check at, y coordinate to check at
+      - Actions: Checks values of the 2D array within the struct to determine what to output, follows Conway's Game Of Life rules 
+      - Output: `0` `1` or `data->cadata[y][x]`'s value if it is neither `1` or `0` 
+
+- `ca.c`
+  - Contains methods to interact with struct `ca_data`
+  - Methods
+    - `void displayCA(struct ca_data *ca)`
+      - Inputs: A pointer to a struct
+      - Actions: Prints the struct's data to stdout
+      - Outputs: Text to stdout
+    - `int set1DCACell(struct ca_data *ca, unsigned int x, unsigned char state)`
+      - Inputs: A pointer to a struct, where in the struct's width to write, and what to write
+      - Actions: Sets the struct's data at width x to state
+      - Outputs: `1` on success, `0` on fail
+    - `int set2DCACell(struct ca_data *ca, unsigned int x, unsigned int y, unsigned char state)`
+      - Inputs: A pointer to a struct, where in the width to write, where in the height to write, what to write
+      - Actions: Sets the struct's data at (x,y) to state
+      - Outputs: `1` on success, `0` on fail
+    - `void initCA(struct ca_data *ca, int state)`
+      - Inputs: A pointer to a struct of ca_data and a value all cells should begin with
+      - Actions: Sets initial starting values of the data struct
+      - Outputs: None, writes to memory
+    - `struct ca_data *create1DCA(int w, unsigned char qstate)`
+      - Inputs: How wide the 1D array should be and the inital state
+      - Actions: Malloc the space as needed and fill initial state
+      - Outputs: A ca_data struct with various elements within
+    - `struct ca_data *create2DCA(int w, int h, unsigned char qstate)`
+      - Inputs: Height and width of the 2D array and the inital state
+      - Actions: Malloc space as needed and fill initial state
+      - Outputs: A ca_data struct with various elements within
+    - `void step1DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int))`
+      - Inputs: Struct and rule to interact with
+      - Actions: Passes a copy of the struct into the rule then setCell's the output to the original
+      - Outputs: None
+    - `void step2DCA(struct ca_data *ca, unsigned char (*rule)(struct ca_data *, int, int))`
+      - Inputs:
+      - Actions: Passes a copy of the struct into the rule then setCell's the output to the original
+      - Outputs: None
+
+- `ca.h`
+  - Header file for `ca.c`
+  - Contains method declarations to be used else where
+  - Contains struct `ca_data` with the following
+    - `int width`
+      - Width of the 2D array
+    - `int height`
+      - Height of the 2D array
+    - `unsigned char **cadata`
+      - 2D Array that holds data
+    - `int wrap`
+      - Flag to indiciate if data should be wrapped or not
+    - `unsigned char qstate`
+      - Initial start state
+    - `int dimension`
+      - Flag if the array going to be 1D or 2D
+
+---
+## Data Structures
+This programme utilises a struct that contains an array along with a few other primitive data types

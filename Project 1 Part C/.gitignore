@@ -1,0 +1,14 @@
+#Executeable
+*.out
+*.exe
+gol
+
+#Compiled Object Files
+*.o
+
+#VSC Specifics
+/.vscode
+
+#Local Files
+*.old
+#*.txt

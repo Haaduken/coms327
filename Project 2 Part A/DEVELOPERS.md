@@ -1,0 +1,98 @@
+# Computer Science 327 Project 2 Part A - `DEVELOPERS
+## Short Summary of Each Source File
+- `main.cpp`
+  - `unsigned char CGOL(CellularAutomaton ca, int x, int y)`
+    - Conways Game of Life
+    - Checks values of the 2D array within the struct to determine what to output, follows Conway's Game Of Life rules
+    - Output: `0` `1` or `data->cadata[y][x]`'s value if it is neither `1` or `0`
+  - `int main(int argc, char **argv)`
+- `GraphicsClient.h`
+  - Contains function headers and private variables for the class
+    - `int port`
+      - Holds the port number for the connection
+    - `string addr`
+      - Holds the address to connect to
+    - `char message[100]`
+      - Holds data for the message to be sent to said connection
+- `GraphicsClient.cpp`
+  - Public:
+    - `GraphicsClient(string _addr, int _port)`
+      - Creates a new graphics client from an address and port
+    - `GraphicsClient(GraphicsClient &copy)`
+      - Create a copy of a given graphics client
+    - `~GraphicsClient()`
+      - Destructor
+    - `void operator=(string newAddr)`
+      - Changes the address to connect to
+    - `int connection()`
+      - Initialises the connection to a server
+    - `int closeConnection()`
+      - Closes connection to server
+    - `void setBackgroundcolor(int r, int g, int b)`
+      - Given an R, G, and B value, it sends a message to the server for what colour the background should be
+    - `void setDrawingcolor(int r, int g, int b)`
+      - Given an R, G, and B value, it sends a message to the server for what colour the drawings should be
+    - `void clear()`
+      - Sends message to server to set entire image to background colour
+    - `void setPixel(int x, int y, int r, int g, int b)`
+      - Sends message to server to make one specific pixel a given RGB colour
+    - `void drawRectangle(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a rectangle outline of given width and height
+    - `void fillRectangle(int x, int y, int w, int h)`      
+      - Given a x, y coord, tells server to create a filled-in rectangle of given width and height
+    - `void clearRectangle(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to clear a rectangle of given width and height 
+    - `void drawOval(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a oval outline of given width and height
+    - `void fillOval(int x, int y, int w, int h)`
+      - Given a x, y coord, tells server to create a filled-in oval of given width and height
+    - `void drawline(int x, int y, int w, int h)`
+      - Given two sets of coords, tells the server to draw a straight line between them
+    - `void drawString(int x, int y, string out)`
+      - Given a set of coords and a string tells the server to print the string in said location
+    - `void repaint()`
+      - Refreshes the client's graphic to match the server's
+  - Private:
+    - `void zeroSet()`
+      - Helper method to configure the message before being used again
+    - `void shape(int x1, int y, int w, int h)`
+      - Used by ovals and rectangles to reduce redundant code
+    - `char *toCharArr(string in)`
+      - Makes strings into char arrays
+- `CellularAutomaton.h`
+  - Contains function headers and private variables for the class
+    - `unsigned char **cadata`
+      - 2D unsigned char array to hold states
+    - `int w`
+      - Holds the width of the scene
+    - `int h`
+      - Holds the height of the scene
+    - `unsigned char qstate`
+      - Holds the quiecent state of the game
+    - `int pixelGap`
+      - Holds the gap between each cell
+    - `int cellSize`
+      - Holds the size each cell should be
+- `CellularAutomaton.cpp`
+  - Public:
+    - `CellularAutomaton(string path, int qstate)`
+      - Constructor takes in a string for file path and an int quiencent state
+    - `CellularAutomaton(CellularAutomaton &copy)`
+      - Constructor that creates a copy from a given CellularAutomaton
+    - `~CellularAutomaton()`
+      - Destructor
+    - `void operator=(CellularAutomaton &copy)`
+      - Tells this CellularAutomaton to commit identity theft
+    - `int step(unsigned char (*rule)(CellularAutomaton, int, int))`
+      - Do a singular step / iteration through a given rule
+    - `void graphicalLink(GraphicsClient &gc)`
+      - Link to a given graphical client and use that to output / mirror what lies within `**cadata`
+    - `int getW()`
+      - Helper method to return the private value of width
+    - `int getH()`
+      - Helper method to return the private value of height
+    - `int getElement(int x, int y)`
+      - Helper method that returns the value of `cadata[y][x]`
+  - Private:
+    - `int setCell(unsigned int x, unsigned int y, unsigned char state)`
+      - Helper method to assign `cadata[y][x]` to a specific state
